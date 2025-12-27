@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Silence — Ananda AI</title>
+  <style>
+    body {
+      background:#0e0e11;
+      color:#eaeaf0;
+      font-family:system-ui,sans-serif;
+      margin:0;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .container {
+      max-width:600px;
+      padding:40px;
+      text-align:center;
+    }
+    .line {
+      font-size:18px;
+      opacity:0.7;
+      margin-bottom:60px;
+    }
+    @keyframes breathe {
+      0% { opacity: 0.3; }
+      50% { opacity: 0.7; }
+      100% { opacity: 0.3; }
+    }
+    .breathing {
+      animation: breathe 8s ease-in-out infinite;
+    }
+    .back {
+      font-size:14px;
+      opacity:0.4;
+      margin-top:40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="line breathing">
+      Здесь не нужно отвечать.
+    </div>
+
+    <div class="back">
+      <a href="/dialog/" style="color:#eaeaf0;text-decoration:none;">
+        ← Войти в диалог
+      </a>
+    </div>
+  </div>
+</body>
+</html>

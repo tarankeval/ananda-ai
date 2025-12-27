@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ananda AI</title>
+    <style>
+        body {
+            background: black;
+            color: white;
+            font-family: sans-serif;
+            text-align: center;
+            padding-top: 20%;
+            margin: 0;
+        }
+
+        h1 {
+            font-size: 36px;
+            letter-spacing: 0.15em;
+            margin-bottom: 20px;
+        }
+
+        .description {
+            margin: 22px auto 26px;
+            opacity: 0.82;
+            line-height: 1.65;
+            font-size: 16px;
+            max-width: 600px;
+            padding: 0 20px;
+        }
+
+        .description p {
+            margin: 12px 0;
+        }
+
+        .enter-button {
+            display: inline-block;
+            padding: 14px 32px;
+            border: 1px solid #ffffff;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 18px;
+            font-family: Arial, sans-serif;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .enter-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .subtitle {
+            margin-top: 12px;
+            font-size: 14px;
+            opacity: 0.7;
+        }
+
+        /* 📱 МЯГКАЯ МОБИЛЬНАЯ АДАПТАЦИЯ ГЛАВНОЙ */
+        @media (max-width: 768px) {
+            body {
+                align-items: flex-start;
+                padding-top: 10vh;
+            }
+
+            .container {
+                max-width: 100%;
+                padding: 24px 18px;
+            }
+
+            h1 {
+                font-size: 28px;
+                letter-spacing: 0.12em;
+            }
+
+            .description {
+                font-size: 16px;
+                line-height: 1.6;
+                padding: 0 24px;
+            }
+
+            .enter-button {
+                width: calc(100% - 48px);
+                max-width: 400px;
+                padding: 14px 0;
+                font-size: 16px;
+            }
+
+            .subtitle {
+                padding: 0 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Ananda AI</h1>
+    
+    <div class="description">
+        <p><b>Это не сервис.</b><br>Не продукт.<br>И не замена человеку.</p>
+        <p>Это пространство диалога,<br>
+        где можно быть услышанным<br>
+        — без спешки, без оценки, без давления.</p>
+        <p>Ты можешь говорить.<br>Или молчать.</p>
+        <p style="opacity:0.9;">Ananda остаётся рядом.</p>
+    </div>
+    
+    <div style="margin-top: 40px;">
+        <a href="/dialog/" class="enter-button">Войти в диалог</a>
+        <div class="subtitle">
+            Диалог с Ananda AI — в тишине и ясности
+        </div>
+    </div>
+</body>
+</html>
