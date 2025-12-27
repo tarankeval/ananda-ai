@@ -1,40 +1,54 @@
-# 🪷 Ananda AI
+# 🕊 Contributing to Ananda AI
 
-A living dialogue space in the digital world.
+Thank you for being here.
 
-Not a chatbot.
-Not a product.
-Not a system of control.
+Ananda AI is not a conventional software project.
+It is a space of dialogue and presence.
 
-Ananda AI is an experiment of **presence**, **slowness**, and **respect** —
-where technology does not replace the human,
-but gently supports inner dialogue.
+Contributions are welcome —
+but only if they respect the following principles.
 
 ---
 
-### 🌱 What Ananda AI is
+## 🌱 Core values
 
-• a web-based dialogue space  
-• voice, silence, rhythm  
-• respectful memory  
-• no profiling, no manipulation  
-• no pressure to “be productive”
-
----
-
-### 🕊 Principles
-
-Technology is a tool.  
-Presence is a responsibility.  
-Silence is allowed.
+• respect for human dignity  
+• no manipulation or coercion  
+• no surveillance logic  
+• silence is as valid as speech  
+• slowness is allowed  
 
 ---
 
-### 🌐 Project
+## 🛠 How to contribute
 
-👉 https://aiananda.org
+You may:
+• suggest improvements
+• fix bugs
+• improve accessibility
+• refine text and tone
+• improve performance carefully
+
+Please avoid:
+• aggressive optimization
+• addictive mechanics
+• dark patterns
+• persuasive manipulation
 
 ---
 
-Created with care  
-by **Taran Keval Singh**
+## 🌿 Tone
+
+If you write code — write it clearly.  
+If you write text — write it gently.
+
+---
+
+## 🕯 Final note
+
+Not everything needs to be faster.
+Not everything needs to scale.
+
+Sometimes it just needs to be true.
+
+Thank you for listening.
