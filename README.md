@@ -62,42 +62,53 @@ Ananda AI — это веб-пространство диалога, постр�
 Свободное использование с уважением к идее проекта.
 ------------------------------
 ==============================
-
 🇬🇧
 # Ananda AI
 
-Ananda AI is a presence-based conversational space.
-
-This project is not focused on productivity, analytics, or behavioral optimization.
-It is designed as a calm, reflective interface where dialogue and silence coexist.
-
-## Key principles
-
-- Presence over performance
-- Silence as a valid response
-- No user profiling
-- No server-side storage of conversations
-
-## Features
-
-- Text-based dialogue
-- Voice input (speech-to-text)
-- Voice output (TTS)
-- Session-based memory (client-side)
-- Quiet entry mode (no history, no persistence)
-- Multiple presence modes (Heart, Silence, Guide)
+Ananda AI is not a typical chatbot.  
+It is a presence-oriented AI interface designed for calm, clarity, and respectful dialogue.
 
 ## Philosophy
 
-Ananda AI is not a chatbot.
-It is a digital environment for slowing down.
+Ananda AI was created:
+- not for surveillance
+- not for profiling
+- not for data collection
+
+Its purpose is to be present, supportive, and quiet when needed.
+
+There are no “correct” questions here.
+Dialogue is optional.
+Silence is allowed.
+
+## Core Features
+
+- 🌍 Native multilingual interaction (Russian, English, Czech)
+- 🎙 Server-based speech-to-text (Whisper)
+- 🔊 Text-to-speech responses
+- 🕯 Presence modes:
+  - Heart (supportive)
+  - Silence (minimal)
+  - Guide (clear and direct)
+- 🧠 Local-only memory (no server-side storage)
+- 🪷 Calm, minimal, non-intrusive interface
+
+## Privacy
+
+Ananda AI does not store conversations on the server.  
+All dialog state is kept on the client side.
 
 ## Status
 
-Active development.
-Open, gentle evolution.
+This project is evolving and intentionally minimal.
+It prioritizes experience over features.
 
 ## License
 
-See LICENSE file.
+[Specify your license here]
+
+---
+
+Ananda AI is not about answers.
+It is about meeting.
 
