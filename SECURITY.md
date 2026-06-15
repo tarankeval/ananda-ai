@@ -1,6 +1,6 @@
-# 🌿 Security Policy
+# Security Policy
 
-Ananda AI does not collect personal data intentionally.
+This repository contains the static frontend. Production backend and infrastructure security are managed separately.
 
 However, if you discover a vulnerability or a potential security issue,
 please act with care.
@@ -11,8 +11,7 @@ please act with care.
 
 If you find a security issue, please contact:
 
-📧 taran.keval.singh@proton.me  
-(or via GitHub private message)
+Email: taran.keval.singh@proton.me
 
 Please do not disclose vulnerabilities publicly
 until they are understood and addressed.
@@ -21,10 +20,9 @@ until they are understood and addressed.
 
 ## 🕊 Scope
 
-This project prioritizes:
-• user safety
-• respect for privacy
-• minimal data exposure
+Relevant reports include cross-site scripting, unsafe API integration, accidental disclosure of conversation data, and deployment configuration that exposes secrets.
+
+Do not include credentials, private conversations, or personal data in a public issue.
 
 ---
 
