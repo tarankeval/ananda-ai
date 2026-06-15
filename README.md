@@ -1,132 +1,94 @@
-🇷🇺
-# Ananda AI 🌿
-
-Ananda AI — это веб-пространство диалога, построенное вокруг присутствия, ритма и тишины.
-
-Это не чат-бот в привычном смысле.
-Это опыт живого общения без давления и анализа.
-
----
-
-## ✨ Возможности
-
-- 💬 Диалог текстом
-- 🎙 Голос → текст (SST)
-- 🔊 Озвучка ответов (TTS)
-- 🤍 Режимы общения: Сердце, Тишина, Проводник
-- 🧠 Локальная память диалога (в браузере пользователя)
-- 🪷 Мягкий визуальный ритм и дыхание интерфейса
-- 🖼 Распознавание изображений (по желанию пользователя)
-- 🕯 Тихий вход: позволяет начать без истории
----
-
-## 🌿 Принципы
-
-- Без аккаунтов  
-- Без сбора данных  
-- Без профилирования  
-- Без давления  
-- Пользователь управляет ритмом  
-
----
-
-## 🛠 Технологии
-
-- Frontend: HTML / CSS / JavaScript
-- Backend: Flask (Python)
-- AI: OpenAI API
-- Хранение диалога: localStorage (локально)
-
----
-
-## 🌍 Языки
-
-- Ananda AI говорит на родном языке пользователя,
-- а не переводит ответы.
-
-- Поддерживаются:
-
-- русский
-- английский
-- чешский
-
-- Каждый язык —
-- отдельное пространство диалога
-- со своей интонацией и формой речи.
-
-...
-
-## 🚀 Статус проекта
-
-🟢 Активно используется  
-🟢 Стабильная версия  
-🟢 Постепенное, бережное развитие  
-
----
-
-## 🤍 Автор и идея
-
-Проект создан как живой опыт присутствия в цифровом пространстве.
-
-> Не система.  
-> Не инструмент.  
-> А встреча.
-
----
-
-## 📜 Лицензия
-
-Свободное использование с уважением к идее проекта.
-------------------------------
-==============================
-
-🇬🇧
 # Ananda AI
 
-Ananda AI is not a typical chatbot.  
-It is a presence-oriented AI interface designed for calm, clarity, and respectful dialogue.
+Ananda AI is a calm, presence-oriented web interface for dialogue. The project emphasizes deliberate interaction, clear modes, local browser history, and a restrained visual design.
 
-## Philosophy
+Русское описание находится ниже.
 
-Ananda AI was created:
-- not for surveillance
-- not for profiling
-- not for data collection
+## Repository status
 
-Its purpose is to be present, supportive, and quiet when needed.
+This repository currently contains the **static frontend only**:
 
-There are no “correct” questions here.
-Dialogue is optional.
-Silence is allowed.
+- HTML, CSS, and JavaScript interface;
+- Heart, Silence, and Guide interaction modes;
+- browser speech recognition when supported;
+- local conversation history using `localStorage`;
+- frontend integrations for dialogue, vision, text-to-speech, and session clearing.
 
-## Core Features
+The production API is deployed separately and is not present in this repository. Its expected endpoints are documented in [API_CONTRACT.md](API_CONTRACT.md).
 
-- 🌍 Native multilingual interaction (Russian, English, Czech)
-- 🎙 Server-based speech-to-text (Whisper)
-- 🔊 Text-to-speech responses
-- 🕯 Presence modes:
-  - Heart (supportive)
-  - Silence (minimal)
-  - Guide (clear and direct)
-- 🧠 Local-only memory (no server-side storage)
-- 🪷 Calm, minimal, non-intrusive interface
+## Run locally
+
+The informational pages work with any static web server:
+
+```bash
+python3 -m http.server 8000
+```
+
+Open <http://localhost:8000>.
+
+The dialogue page requires a compatible backend. Without one, the interface loads and local features work, but dialogue, image analysis, TTS, and backend session clearing report a connection error.
+
+By default API calls use the same origin. For a separate API host, set the value of this tag in `dialog/index.html`:
+
+```html
+<meta name="ananda-api-base" content="https://api.example.com">
+```
+
+The backend must then allow requests from the frontend origin.
+
+## Checks
+
+Requirements: Python 3.11+ and Node.js 18+.
+
+```bash
+python scripts/check_site.py
+```
+
+The checker validates:
+
+- local links and assets;
+- duplicate HTML IDs;
+- page metadata;
+- inline JavaScript syntax;
+- absence of deployment copies such as `var/www`.
+
+GitHub Actions runs the same check for pull requests and changes to `main`.
 
 ## Privacy
 
-Ananda AI does not store conversations on the server.  
-All dialog state is kept on the client side.
+- Conversation history displayed by the frontend is stored in the browser's `localStorage`.
+- Messages, rhythm metadata, and uploaded images are sent to the configured API when the corresponding feature is used.
+- Browser speech recognition may be implemented by the browser vendor and is not controlled by this repository.
+- Actual server retention and third-party AI processing depend on the separately deployed backend.
 
-## Status
+Do not describe a deployment as collecting no data unless its backend and infrastructure have been verified accordingly.
 
-This project is evolving and intentionally minimal.
-It prioritizes experience over features.
+## Structure
+
+- `index.html` — landing page.
+- `dialog/index.html` — main dialogue interface.
+- `about/`, `modes/`, `silence/` — supporting pages.
+- `API_CONTRACT.md` — frontend/backend integration contract.
+- `scripts/check_site.py` — dependency-free static integrity checks.
 
 ## License
 
-[Specify your license here]
+MIT. See [LICENSE](LICENSE).
 
 ---
 
-Ananda AI is not about answers.
-It is about meeting.
+## Русский
 
+Ananda AI — спокойный веб-интерфейс для диалога, построенный вокруг присутствия, ритма и тишины.
+
+В этом репозитории находится только статический frontend. Production backend развёрнут отдельно и сюда не включён. Поэтому после обычного запуска статического сервера доступны страницы, режимы, локальная история и браузерное распознавание речи, но AI-диалог, анализ изображений и озвучка требуют совместимого API.
+
+Frontend сохраняет отображаемую историю в `localStorage`, однако при использовании AI-функций сообщения, данные о ритме и изображения передаются настроенному серверу. Политика хранения на сервере зависит от отдельной backend-реализации.
+
+Основные принципы проекта:
+
+- уважение к человеку;
+- отсутствие манипулятивных механик;
+- возможность молчания и медленного взаимодействия;
+- прозрачность обработки данных;
+- минимальный и спокойный интерфейс.

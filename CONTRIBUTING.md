@@ -35,6 +35,14 @@ Please avoid:
 • dark patterns
 • persuasive manipulation
 
+Before opening a pull request, run:
+
+```bash
+python scripts/check_site.py
+```
+
+The command requires Python 3.11+ and Node.js 18+ and checks HTML links, metadata, IDs, and inline JavaScript syntax.
+
 ---
 
 ## 🌿 Tone

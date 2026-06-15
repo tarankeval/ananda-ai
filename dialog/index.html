@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="ananda-api-base" content="">
 <title>Ananda AI — Диалог</title>
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
@@ -523,15 +524,15 @@ a:hover {
 
 <!-- Кнопки в ряд: Отправить + Микрофон + Изображение -->
 <div class="button-row">
-  <button id="sendBtn" class="btn-primary">Отправить</button>
-  <button id="micBtn" class="btn-secondary tip"
+  <button type="button" id="sendBtn" class="btn-primary">Отправить</button>
+  <button type="button" id="micBtn" class="btn-secondary tip"
           data-tip="Говори голосом.
 Текст появится здесь.
 Отправь, когда готов.">
     🎙 Говорить
   </button>
   <input type="file" id="imageInput" accept="image/*" style="display:none">
-  <button onclick="selectImage()" class="btn-secondary tip"
+  <button type="button" onclick="selectImage()" class="btn-secondary tip"
           data-tip="Покажи Ananda изображение.
 Она увидит и опишет.">
     🖼 Показать изображение
@@ -549,7 +550,7 @@ a:hover {
 <div class="gestures" aria-label="Жесты состояния">
   <button type="button" class="gesture" data-insert="🤍 Я здесь." data-mode="heart" data-tip="Присутствие, мягкий старт">🤍</button>
   <button type="button" class="gesture" data-insert="🌬 Мне трудно говорить. Можно медленно." data-mode="heart" data-tip="Когда слов мало">🌬</button>
-  <button type="button" class="gesture" data-insert="🌱 Мне нужна поддержку. Просто будь рядом." data-mode="heart" data-tip="Запрос тепла">🌱</button>
+  <button type="button" class="gesture" data-insert="🌱 Мне нужна поддержка. Просто будь рядом." data-mode="heart" data-tip="Запрос тепла">🌱</button>
   <button type="button" class="gesture" data-insert="🌙 Хочу тишины. Можно коротко." data-mode="silence" data-tip="Режим паузы">🌙</button>
   <button type="button" class="gesture" data-insert="🔥 Скажи честно и прямо." data-mode="guide" data-tip="Чёткий запрос">🔥</button>
 
@@ -559,7 +560,7 @@ a:hover {
 <!-- Tooltip -->
 <div id="tooltip" class="tooltip" role="status" aria-live="polite"></div>
 
-<button onclick="clearDialog()" class="btn-warning tip"
+<button type="button" onclick="clearDialog()" class="btn-warning tip"
         data-tip="Очистить текущий диалог.
 Без следов.
 Без возврата.">
@@ -610,6 +611,19 @@ const input = document.getElementById("input");
 const micBtn = document.getElementById("micBtn");
 const micStatus = document.getElementById("micStatus");
 const indicator = document.getElementById("listening-indicator");
+const API_BASE = (document.querySelector('meta[name="ananda-api-base"]')?.content || "").replace(/\/$/, "");
+
+function apiUrl(path) {
+  return `${API_BASE}${path}`;
+}
+
+async function apiFetch(path, options = {}) {
+  const response = await fetch(apiUrl(path), options);
+  if (!response.ok) {
+    throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+  }
+  return response;
+}
 
 let currentMode = "heart";
 let listening = false;
@@ -731,12 +745,13 @@ document.getElementById("imageInput").addEventListener("change", async function 
   formData.append("image", file);
 
   try {
-    const res = await fetch("/api/vision", {
+    const res = await apiFetch("/api/vision", {
       method: "POST",
       body: formData
     });
 
     const data = await res.json();
+    if (typeof data.text !== "string") throw new Error("Invalid vision response");
     breath.remove();
 
     const aiMsg = document.createElement("div");
@@ -806,7 +821,7 @@ async function speakOpenAI(text, btn, tempo = null) {
   try {
     if (btn) btn.classList.add("active");
 
-    const res = await fetch("/api/tts", {
+    const res = await apiFetch("/api/tts", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ text })
@@ -818,6 +833,12 @@ async function speakOpenAI(text, btn, tempo = null) {
     const audio = new Audio(audioUrl);
     currentAudio = audio;
 
+    const releaseAudio = () => {
+      URL.revokeObjectURL(audioUrl);
+      if (btn) btn.classList.remove("active");
+      if (currentAudio === audio) currentAudio = null;
+    };
+
     // 🪷 Замедление воспроизведения по темпу
     if (actualTempo === "slow") audio.playbackRate = 0.85;
     else if (actualTempo === "normal") audio.playbackRate = 1.0;
@@ -828,12 +849,11 @@ async function speakOpenAI(text, btn, tempo = null) {
       audio.playbackRate *= 0.95;
     }
 
-    audio.onended = () => {
-      if (btn) btn.classList.remove("active");
-      currentAudio = null;
-    };
+    audio.onended = releaseAudio;
+    audio.onerror = releaseAudio;
+    audio.onpause = releaseAudio;
 
-    audio.play();
+    await audio.play();
 
   } catch (e) {
     console.error("TTS error", e);
@@ -957,6 +977,7 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
   
   recognition.onstart = () => {
     listening = true;
+    manualStop = false;
     micBtn.innerText = "🎙 Слушаю…";
     micBtn.classList.add("listening");
     micStatus.innerText = "Говорите...";
@@ -1011,8 +1032,9 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
       if (listening && !manualStop) {
         // 🫁 длинная пауза - останавливаем распознавание
         console.log("🫁 дыхательная пауза - автостоп");
-        recognition.stop();
+        listening = false;
         manualStop = true;
+        recognition.stop();
       }
     }, 1400);
   };
@@ -1054,6 +1076,7 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
   micBtn.addEventListener("click", () => {
     if (!listening) {
       listening = true;
+      manualStop = false;
       pauses = [];
       try {
         recognition.start();
@@ -1063,6 +1086,7 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
       }
     } else {
       listening = false;
+      manualStop = true;
       try {
         recognition.stop();
       } catch (e) {
@@ -1078,7 +1102,14 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
 
 // 💾 Загрузка сохраненного диалога
 function loadDialog() {
-  const saved = JSON.parse(localStorage.getItem("ananda_dialog") || "[]");
+  let saved = [];
+  try {
+    const parsed = JSON.parse(localStorage.getItem("ananda_dialog") || "[]");
+    if (Array.isArray(parsed)) saved = parsed;
+  } catch (error) {
+    console.error("Не удалось восстановить локальный диалог:", error);
+    localStorage.removeItem("ananda_dialog");
+  }
   saved.forEach(m => {
     const el = document.createElement("div");
     el.className = "message " + m.role + " show";
@@ -1146,7 +1177,13 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function save(role, text) {
-  const dialog = JSON.parse(localStorage.getItem("ananda_dialog") || "[]");
+  let dialog = [];
+  try {
+    const parsed = JSON.parse(localStorage.getItem("ananda_dialog") || "[]");
+    if (Array.isArray(parsed)) dialog = parsed;
+  } catch (error) {
+    console.error("Не удалось прочитать локальный диалог:", error);
+  }
   dialog.push({role, text});
   localStorage.setItem("ananda_dialog", JSON.stringify(dialog));
 }
@@ -1157,7 +1194,7 @@ async function clearDialog() {
     chat.innerHTML = "";
     
     try {
-      await fetch("/api/clear", {
+      await apiFetch("/api/clear", {
         method: "POST",
         credentials: "include"
       });
@@ -1224,7 +1261,7 @@ async function send() {
   chat.scrollTop = chat.scrollHeight;
   
   try {
-    const res = await fetch("/api/dialog", {
+    const res = await apiFetch("/api/dialog", {
       method: "POST",
       headers: {"Content-Type": "application/json"},
       credentials: "include",
@@ -1242,6 +1279,9 @@ async function send() {
     });
     
     const data = await res.json();
+    if (typeof data.reply !== "string" && typeof data.action !== "string") {
+      throw new Error("Invalid dialog response");
+    }
     breathMsg.remove();
     
     const aiMsg = document.createElement("div");
@@ -1271,7 +1311,7 @@ async function send() {
     
     const errorMsg = document.createElement("div");
     errorMsg.className = "message ai show";
-    errorMsg.innerText = "Извините, произошла ошибка соединения...";
+    errorMsg.innerText = "Сейчас не удаётся связаться с Ananda. Попробуйте немного позже.";
     chat.appendChild(errorMsg);
   }
 }
